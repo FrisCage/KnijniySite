@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог книг - BookWorld</title>
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Шапка сайта */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+        }
+        
+        .header-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        /* Навигация */
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #34495e;
+        }
+        
+        .active {
+            background-color: #e74c3c;
+        }
+        
+        /* Контейнер страницы */
+        .page-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        /* Боковая панель с фильтрами */
+        .sidebar {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-group ul {
+            list-style: none;
+        }
+        
+        .filter-group ul li {
+            margin-bottom: 8px;
+        }
+        
+        .filter-group ul li a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+        
+        .filter-group ul li a:hover {
+            color: #e74c3c;
+        }
+        
+        .price-range {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .price-range input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .filter-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Главный контент */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .catalog-header h1 {
+            font-size: 28px;
+            color: #2c3e50;
+        }
+        
+        .sort-dropdown {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* Сетка книг */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .book-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .book-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .book-info {
+            padding: 15px;
+        }
+        
+        .book-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            height: 40px;
+            overflow: hidden;
+        }
+        
+        .book-author {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .book-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .book-card .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 8px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .book-card .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .pagination a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: white;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .pagination a:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .pagination a.active {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #e74c3c;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #e74c3c;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>Book<span>World</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="catalog.html" class="active">Каталог</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Контент страницы -->
+    <div class="page-container">
+        <!-- Боковая панель с фильтрами -->
+        <aside class="sidebar">
+            <h2>Фильтры</h2>
+            
+            <div class="filter-group">
+                <h3>Жанры</h3>
+                <ul>
+                    <li><a href="#">Художественная литература</a></li>
+                    <li><a href="#">Фантастика</a></li>
+                    <li><a href="#">Детективы</a></li>
+                    <li><a href="#">Романы</a></li>
+                    <li><a href="#">Нон-фикшн</a></li>
+                    <li><a href="#">Бизнес-литература</a></li>
+                    <li><a href="#">Детские книги</a></li>
+                </ul>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Авторы</h3>
+                <ul>
+                    <li><a href="#">Федор Достоевский</a></li>
+                    <li><a href="#">Лев Толстой</a></li>
+                    <li><a href="#">Джоан Роулинг</a></li>
+                    <li><a href="#">Стивен Кинг</a></li>
+                    <li><a href="#">Джордж Оруэлл</a></li>
+                </ul>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Цена</h3>
+                <div class="price-range">
+                    <input type="text" placeholder="От">
+                    <input type="text" placeholder="До">
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Издательство</h3>
+                <ul>
+                    <li><a href="#">Эксмо</a></li>
+                    <li><a href="#">АСТ</a></li>
+                    <li><a href="#">МИФ</a></li>
+                    <li><a href="#">Питер</a></li>
+                    <li><a href="#">Росмэн</a></li>
+                </ul>
+            </div>
+            
+            <button class="filter-btn">Применить фильтры</button>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="main-content">
+            <div class="catalog-header">
+                <h1>Каталог книг</h1>
+                <select class="sort-dropdown">
+                    <option>Сортировка: По популярности</option>
+                    <option>Сортировка: По цене (возрастание)</option>
+                    <option>Сортировка: По цене (убывание)</option>
+                    <option>Сортировка: По новизне</option>
+                </select>
+            </div>
+            
+            <!-- Сетка книг -->
+            <div class="books-grid">
+                <!-- Книга 1 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/%D0%A2%D0%BE%D0%BB%D1%81%D1%82%D0%BE%D0%B9_%D0%9B._%D0%9D._%D0%92%D0%BE%D0%B9%D0%BD%D0%B0_%D0%B8_%D0%BC%D0%B8%D1%80%2C_%D0%A2._1._%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_%D0%B8%D0%B7%D0%B4.1912%D0%B3%2C%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F.jpg" alt="Война и мир">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Война и мир</div>
+                        <div class="book-author">Лев Толстой</div>
+                        <div class="book-price">750 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 2 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://cdn.eksmo.ru/v2/430000000000006016/COVER/cover1__w600.jpg" alt="Гордость и предубеждение">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Гордость и предубеждение</div>
+                        <div class="book-author">Джейн Остин</div>
+                        <div class="book-price">490 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 3 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://fantlab.ru/images/editions/orig/1950?r=1492537109" alt="Гарри Поттер и Тайная комната">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Гарри Поттер и Тайная комната</div>
+                        <div class="book-author">Джоан Роулинг</div>
+                        <div class="book-price">690 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 4 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://imo10.labirint.ru/books/1005952/cover.jpg/242-0" alt="Шерлок Холмс">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Приключения Шерлока Холмса</div>
+                        <div class="book-author">Артур Конан Дойл</div>
+                        <div class="book-price">550 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 5 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://book-cover.ru/sites/default/files/styles/osn_530x/public/field/image/dostoevskiy-idiot.jpg?itok=XmqeU8I6" alt="Идиот">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Идиот</div>
+                        <div class="book-author">Федор Достоевский</div>
+                        <div class="book-price">480 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 6 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://ndc.book24.ru/resize/820x1180/pim/products/images/6b/40/0193960d-cb64-70e6-b06d-7afbb1366b40.jpg" alt="Властелин колец">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Властелин колец: Братство кольца</div>
+                        <div class="book-author">Дж. Р. Р. Толкин</div>
+                        <div class="book-price">790 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 7 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://static.insales-cdn.com/r/6bIvb8VXwsw/rs:fit:570:570:1/q:80/plain/images/products/1/2014/566659038/uk399849.jpg@jpg" alt="Оно">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Оно</div>
+                        <div class="book-author">Стивен Кинг</div>
+                        <div class="book-price">680 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 8 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://static.insales-cdn.com/images/products/1/6037/622155669/uk833218.jpg" alt="Маленький принц">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Маленький принц</div>
+                        <div class="book-author">Антуан де Сент-Экзюпери</div>
+                        <div class="book-price">350 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+                
+                <!-- Книга 9 -->
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="https://static.insales-cdn.com/images/products/1/6106/260478938/2666861_detail.jpg" alt="Три товарища">
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Три товарища</div>
+                        <div class="book-author">Эрих Мария Ремарк</div>
+                        <div class="book-price">580 ₽</div>
+                        <a href="#" class="btn">В корзину</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Пагинация -->
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">...</a>
+                <a href="#">10</a>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>О BookWorld</h3>
+                <ul>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Блог</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Помощь</h3>
+                <ul>
+                    <li><a href="#">Доставка</a></li>
+                    <li><a href="#">Оплата</a></li>
+                    <li><a href="#">Возврат</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Категории</h3>
+                <ul>
+                    <li><a href="#">Художественная литература</a></li>
+                    <li><a href="#">Нон-фикшн</a></li>
+                    <li><a href="#">Детские книги</a></li>
+                    <li><a href="#">Учебная литература</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <ul>
+                    <li><a href="tel:+78001234567">8 (800) 123-45-67</a></li>
+                    <li><a href="mailto:info@bookworld.ru">info@bookworld.ru</a></li>
+                    <li>г. Москва, ул. Книжная, д. 42</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 BookWorld. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

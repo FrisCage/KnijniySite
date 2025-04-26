@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookWorld - Интернет-магазин книг</title>
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Шапка сайта */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+        }
+        
+        .header-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        /* Навигация */
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #34495e;
+        }
+        
+        .active {
+            background-color: #e74c3c;
+        }
+        
+        /* Главный баннер */
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/400') center/cover;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .banner-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .banner h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        
+        .banner p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Секция поиска */
+        .search-section {
+            background-color: white;
+            padding: 30px 0;
+        }
+        
+        .search-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+        }
+        
+        .search-box {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .search-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Секция книг */
+        .books-section {
+            padding: 50px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            color: #7f8c8d;
+        }
+        
+        .books-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .book-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .book-image {
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .book-info {
+            padding: 20px;
+        }
+        
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .book-author {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        .book-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        
+        .book-card .btn {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #e74c3c;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #e74c3c;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>Book<span>World</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Главная</a></li>
+                    <li><a href="catalog.html">Каталог</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Главный баннер -->
+    <section class="banner">
+        <div class="banner-content">
+            <h2>Добро пожаловать в BookWorld</h2>
+            <p>Откройте мир знаний и приключений с нашей огромной коллекцией книг для читателей всех возрастов.</p>
+            <a href="catalog.html" class="btn">Перейти в каталог</a>
+        </div>
+    </section>
+    
+    <!-- Секция поиска -->
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Поиск книг по названию, автору или жанру...">
+            <button class="search-btn">Поиск</button>
+        </div>
+    </section>
+    
+    <!-- Популярные книги -->
+    <section class="books-section">
+        <div class="section-title">
+            <h2>Популярные книги</h2>
+            <p>Самые популярные книги среди наших читателей</p>
+        </div>
+        
+        <div class="books-container">
+            <!-- Книга 1 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://static.insales-cdn.com/images/products/1/7550/246357374/2689727_detail.jpg" alt="Мастер и Маргарита">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Мастер и Маргарита</div>
+                    <div class="book-author">Михаил Булгаков</div>
+                    <div class="book-price">590 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+            
+            <!-- Книга 2 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://www.litres.ru/pub/c/cover/67572948.jpg" alt="1984">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">1984</div>
+                    <div class="book-author">Джордж Оруэлл</div>
+                    <div class="book-price">450 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+            
+            <!-- Книга 3 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://static.insales-cdn.com/r/BJYYefdDZwE/rs:fit:570:570:1/q:80/plain/images/products/1/2909/842459997/9785353003083-uk.jpg@jpg" alt="Гарри Поттер и философский камень">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Гарри Поттер и философский камень</div>
+                    <div class="book-author">Джоан Роулинг</div>
+                    <div class="book-price">690 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+            
+            <!-- Книга 4 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://cdn.azbooka.ru/cv/w1100/744e11e8-81a5-41ff-92ff-784d2166f3b3.jpg" alt="Преступление и наказание">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Преступление и наказание</div>
+                    <div class="book-author">Федор Достоевский</div>
+                    <div class="book-price">520 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Новинки -->
+    <section class="books-section" style="background-color: #ecf0f1;">
+        <div class="section-title">
+            <h2>Новинки</h2>
+            <p>Свежие поступления в нашем магазине</p>
+        </div>
+        
+        <div class="books-container">
+            <!-- Книга 1 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://imo10.labirint.ru/books/537177/cover.jpg/242-0" alt="Дюна">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Дюна</div>
+                    <div class="book-author">Фрэнк Герберт</div>
+                    <div class="book-price">780 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+            
+            <!-- Книга 2 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://static.insales-cdn.com/images/products/1/1299/204104979/1026072003.jpg" alt="Тонкое искусство пофигизма">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Тонкое искусство пофигизма</div>
+                    <div class="book-author">Марк Мэнсон</div>
+                    <div class="book-price">550 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+            
+            <!-- Книга 3 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://d1fa9n6k2ql7on.cloudfront.net/KFFQT96YQL2J4NM1664836845.jpg" alt="Атомные привычки">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Атомные привычки</div>
+                    <div class="book-author">Джеймс Клир</div>
+                    <div class="book-price">630 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+            
+            <!-- Книга 4 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://static.insales-cdn.com/r/Jwh2DhBsKNo/rs:fit:570:570:1/q:80/plain/images/products/1/6335/458963135/uk622920.jpg@jpg" alt="Сильмариллион">
+                </div>
+                <div class="book-info">
+                    <div class="book-title">Сильмариллион</div>
+                    <div class="book-author">Джон Р. Р. Толкин</div>
+                    <div class="book-price">720 ₽</div>
+                    <a href="#" class="btn">В корзину</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>О BookWorld</h3>
+                <ul>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Блог</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Помощь</h3>
+                <ul>
+                    <li><a href="#">Доставка</a></li>
+                    <li><a href="#">Оплата</a></li>
+                    <li><a href="#">Возврат</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Категории</h3>
+                <ul>
+                    <li><a href="#">Художественная литература</a></li>
+                    <li><a href="#">Нон-фикшн</a></li>
+                    <li><a href="#">Детские книги</a></li>
+                    <li><a href="#">Учебная литература</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <ul>
+                    <li><a href="tel:+78001234567">8 (800) 123-45-67</a></li>
+                    <li><a href="mailto:info@bookworld.ru">info@bookworld.ru</a></li>
+                    <li>г. Москва, ул. Книжная, д. 42</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 BookWorld. Все права защищены.</p>
+        </div>
+    </footer>
+    
+</body>
+</html>
